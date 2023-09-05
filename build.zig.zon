@@ -1,0 +1,10 @@
+.{
+    .name = "cocoa",
+    .version = "0.0.0",
+    .dependencies = .{
+        .zig_objc = .{
+            .url = "https://github.com/ryleelyman/zig-objc/archive/94ddb44132384846e1dcf6014bcc36183fd2db41.tar.gz",
+            .hash = "1220c09c99dc4292f89a904c1725cf82753b94bf075b16c0bf6fada7539032f725db",
+        },
+    },
+}
