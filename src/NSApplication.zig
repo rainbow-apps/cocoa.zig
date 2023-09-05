@@ -8,7 +8,7 @@ object: objc.Object,
 
 pub fn sharedApplication() NSApplication {
     return .{
-        .object = objc.Class("NSApplication").message(objc.Object, "sharedApplication", .{}),
+        .object = objc.Class("NSApplication").?.message(objc.Object, "sharedApplication", .{}),
     };
 }
 
