@@ -28,7 +28,7 @@ pub const StyleMask = packed struct {
     }
 };
 
-pub const BackingStore = enum(u64) {
+pub const BackingStore = enum(c_uint) {
     Retained = 0,
     Nonretained = 1,
     Buffered = 2,
@@ -48,7 +48,7 @@ pub fn initWithContentRect(
     backing: BackingStore,
     deferred: bool,
 ) void {
-    _ = self.object.message(objc.Object, "initWithContentRect", .{
+    _ = self.object.message(objc.Object, "initWithContentRect:styleMask:backing:defer:", .{
         content,
         style,
         backing,
@@ -57,7 +57,7 @@ pub fn initWithContentRect(
 }
 
 pub fn setIsVisible(self: Window, visible: bool) void {
-    self.object.message(void, "setIsVisible", .{if (visible) @as(u8, 1) else @as(u8, 0)});
+    self.object.message(void, "setIsVisible:", .{if (visible) @as(u8, 1) else @as(u8, 0)});
 }
 
 pub fn deinit(self: Window) void {

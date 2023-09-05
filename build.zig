@@ -32,4 +32,19 @@ pub fn build(b: *std.Build) void {
     const test_step = b.step("test", "Run tests");
     const tests_run = b.addRunArtifact(tests);
     test_step.dependOn(&tests_run.step);
+
+    const exe = b.addExecutable(.{
+        .name = "example-window",
+        .root_source_file = .{ .path = "src/test.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
+    exe.addModule("zig-objc", zig_objc.module("objc"));
+    exe.linkSystemLibrary("objc");
+    exe.linkFramework("Cocoa");
+    b.installArtifact(exe);
+
+    const example_step = b.step("example", "Run example");
+    const example_run = b.addRunArtifact(exe);
+    example_step.dependOn(&example_run.step);
 }
