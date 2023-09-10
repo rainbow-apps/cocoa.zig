@@ -279,6 +279,20 @@ pub const NSString = struct {
             pub fn UTF8String(self: T) []const u8 {
                 return std.mem.sliceTo(self.object.getProperty([*c]const u8, "UTF8String"), 0);
             }
+
+            pub fn initWithCString(self: T, cstring: [:0]const u8, encoding: Encoding) ?T {
+                const ret = self.object.message(?objc.c.id, "initWithCString:encoding:", .{ cstring.ptr, @intFromEnum(encoding) });
+                return T.fromObject(.{
+                    .value = ret orelse return null,
+                });
+            }
+
+            pub fn stringWithCString(cstring: [:0]const u8, encoding: Encoding) ?T {
+                const ret = T.class().message(?objc.c.id, "stringWithCString:encoding:", .{ cstring.ptr, @intFromEnum(encoding) });
+                return T.fromObject(.{
+                    .value = ret orelse return null,
+                });
+            }
         };
     }
 
