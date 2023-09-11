@@ -149,37 +149,41 @@ pub const NSWindow = struct {
         Shadow,
     };
 
-    pub fn deinit(self: NSWindow) void {
-        self.object.message(void, "dealloc", .{});
-    }
+    pub usingnamespace extends(@This(), true);
 
-    pub fn initWithContentRect(
-        self: *NSWindow,
-        content: cocoa.NSRect,
-        style: StyleMask,
-        backing: BackingStore,
-        deferred: bool,
-    ) void {
-        self.object = self.object.message(
-            objc.Object,
-            "initWithContentRect:styleMask:backing:defer:",
-            .{
-                content,
-                style,
-                backing,
-                if (deferred) @as(u8, 1) else @as(u8, 0),
-            },
-        );
-    }
+    pub fn extends(comptime T: type, comptime should_assert: bool) type {
+        comptime if (should_assert) {
+            object.assert_structure(T);
+        };
+        return struct {
+            pub fn initWithContentRect(
+                self: T,
+                content: cocoa.NSRect,
+                style: StyleMask,
+                backing: BackingStore,
+                deferred: bool,
+            ) T {
+                return T.fromObject(self.object.message(
+                    objc.Object,
+                    "initWithContentRect:styleMask:backing:defer:",
+                    .{
+                        content,
+                        style,
+                        backing,
+                        if (deferred) @as(u8, 1) else @as(u8, 0),
+                    },
+                ));
+            }
 
-    pub fn setIsVisible(self: NSWindow, visible: bool) void {
-        self.object.message(void, "setIsVisible:", .{if (visible) @as(u8, 1) else @as(u8, 0)});
-    }
+            pub fn setIsVisible(self: T, visible: bool) void {
+                self.object.message(void, "setIsVisible:", .{if (visible) @as(u8, 1) else @as(u8, 0)});
+            }
 
-    pub fn setContentView(self: NSWindow, contentView: cocoa.NSView) void {
-        self.object.message(void, "setContentView:", .{&contentView.object});
+            pub fn setContentView(self: T, contentView: cocoa.NSView) void {
+                self.object.message(void, "setContentView:", .{contentView.object.value});
+            }
+        };
     }
-
     pub fn fromObject(self: objc.Object) NSWindow {
         return .{
             .object = self,
@@ -189,7 +193,7 @@ pub const NSWindow = struct {
 
 test "init" {
     var window = NSWindow.alloc();
-    defer window.deinit();
+    defer window.dealloc();
     const mask: NSWindow.StyleMask = .{
         .titled = true,
         .closable = true,
@@ -198,7 +202,7 @@ test "init" {
         .fullscreen = false,
         .fullsize_content_view = true,
     };
-    window.initWithContentRect(
+    window = window.initWithContentRect(
         cocoa.NSRect.make(100, 100, 300, 300),
         mask,
         .Buffered,

@@ -27,6 +27,7 @@ pub fn build(b: *std.Build) void {
     tests.addModule("zig-objc", zig_objc.module("objc"));
     tests.linkSystemLibrary("objc");
     tests.linkFramework("Cocoa");
+    tests.linkFramework("WebKit");
     b.installArtifact(tests);
 
     const test_step = b.step("test", "Run tests");
@@ -42,6 +43,7 @@ pub fn build(b: *std.Build) void {
     exe.addModule("zig-objc", zig_objc.module("objc"));
     exe.linkSystemLibrary("objc");
     exe.linkFramework("Cocoa");
+    exe.linkFramework("WebKit");
     b.installArtifact(exe);
 
     const example_step = b.step("example", "Run example");

@@ -25,7 +25,9 @@ pub usingnamespace @import("NSWindow.zig");
 pub const NSApplication = @import("NSApplication.zig");
 pub usingnamespace @import("NSCoder.zig");
 pub usingnamespace @import("NSError.zig");
+pub usingnamespace @import("NSView.zig");
 pub usingnamespace @import("NSURL.zig");
+pub usingnamespace @import("WKWebView.zig");
 
 pub const NSComparisonResult = enum(c_int) {
     Ascending = -1,

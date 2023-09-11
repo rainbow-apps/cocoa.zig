@@ -160,8 +160,7 @@ pub fn NSObjectProtocol(comptime T: type, comptime should_assert: bool) type {
         }
 
         pub fn getDescription(self: T) cocoa.NSString {
-            const ret = self.object.getProperty(objc.c.id, "description");
-            return cocoa.NSString.fromObject(.{ .value = ret });
+            return cocoa.NSString.fromObject(self.object.message(objc.Object, "description", .{}));
         }
     };
 }

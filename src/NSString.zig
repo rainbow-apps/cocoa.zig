@@ -73,6 +73,9 @@ pub const NSString = struct {
         };
         return struct {
             pub usingnamespace object.NSObject(T, false);
+            pub usingnamespace object.NSCopying(T, false);
+            pub usingnamespace object.NSMutableCopying(T, false);
+            pub usingnamespace object.NSSecureCoding(T, false);
             pub fn length(self: T) usize {
                 return @intCast(self.object.getProperty(c_ulong, "length"));
             }
@@ -280,15 +283,29 @@ pub const NSString = struct {
                 return std.mem.sliceTo(self.object.getProperty([*c]const u8, "UTF8String"), 0);
             }
 
-            pub fn initWithCString(self: T, cstring: [:0]const u8, encoding: Encoding) ?T {
-                const ret = self.object.message(?objc.c.id, "initWithCString:encoding:", .{ cstring.ptr, @intFromEnum(encoding) });
+            pub fn initWithCStringEncoding(self: T, cstring: [:0]const u8, encoding: Encoding) ?T {
+                const ret = self.object.message(objc.c.id, "initWithCString:encoding:", .{ cstring.ptr, @intFromEnum(encoding) });
                 return T.fromObject(.{
                     .value = ret orelse return null,
                 });
             }
 
-            pub fn stringWithCString(cstring: [:0]const u8, encoding: Encoding) ?T {
-                const ret = T.class().message(?objc.c.id, "stringWithCString:encoding:", .{ cstring.ptr, @intFromEnum(encoding) });
+            pub fn stringWithCStringEncoding(cstring: [:0]const u8, encoding: Encoding) ?T {
+                const ret = T.class().message(objc.c.id, "stringWithCString:encoding:", .{ cstring.ptr, @intFromEnum(encoding) });
+                return T.fromObject(.{
+                    .value = ret orelse return null,
+                });
+            }
+
+            pub fn initWithUTF8String(self: T, cstring: [:0]const u8) ?T {
+                const ret = self.object.message(objc.c.id, "initWithUTF8String:", .{cstring.ptr});
+                return T.fromObject(.{
+                    .value = ret orelse return null,
+                });
+            }
+
+            pub fn stringWithUTF8String(cstring: [:0]const u8) ?T {
+                const ret = T.class().message(objc.c.id, "stringWithUTF8String:", .{cstring.ptr});
                 return T.fromObject(.{
                     .value = ret orelse return null,
                 });

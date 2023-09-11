@@ -18,10 +18,8 @@ pub fn fromObject(self: objc.Object) @This() {
 
 pub usingnamespace object.NSObject(NSApplication, true);
 
-pub fn sharedApplication() NSApplication {
-    return .{
-        .object = objc.getClass("NSApplication").?.message(objc.Object, "sharedApplication", .{}),
-    };
+pub fn sharedApplication() @This() {
+    return fromObject(class().message(objc.Object, "sharedApplication", .{}));
 }
 
 pub fn run(self: NSApplication) void {
