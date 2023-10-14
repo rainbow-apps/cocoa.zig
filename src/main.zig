@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const objc = @import("zig-objc");
+pub const objc = @import("zig-objc");
 const object = @import("NSObject.zig");
 
 pub const NSObject = struct {
