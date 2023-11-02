@@ -1,10 +1,11 @@
 .{
+    .paths = .{"src"},
     .name = "cocoa",
     .version = "0.0.0",
     .dependencies = .{
         .zig_objc = .{
-            .url = "https://github.com/ryleelyman/zig-objc/archive/651152b01dd4502414c60a187f600956137418a9.tar.gz",
-            .hash = "1220165685d92fd872f001cf1402908130da9c8c9bd7f5a8bcb2cdafa74a963b12ae",
+            .url = "https://github.com/mitchellh/zig-objc/archive/a38331cb6ee366b3f22d0068297810ef14c0c400.tar.gz",
+            .hash = "1220129674f0b81ece2374461a51b62f046048ca75881e4a58505b2a792ccb56c60d",
         },
     },
 }
