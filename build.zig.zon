@@ -1,5 +1,5 @@
 .{
-    .paths = .{"src"},
+    .paths = .{ "src", "build.zig", "build.zig.zon" },
     .name = "cocoa",
     .version = "0.0.0",
     .dependencies = .{
