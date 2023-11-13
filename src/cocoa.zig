@@ -46,11 +46,10 @@ pub const nil = @as(objc.c.id, null);
 pub const Nil = @as(objc.c.Class, null);
 
 pub fn alloc(class: anytype) objc.Object {
-    if (@TypeOf(class == objc.Class)) {
-        return class.msgSend(objc.Object, "alloc", .{});
-    } else {
-        std.debug.assert(@TypeOf(class) == [:0]const u8);
-        return objc.getClass(class).?.msgSend(objc.Object, "alloc", .{});
+    switch (@typeInfo(@TypeOf(class))) {
+        .Struct => return class.msgSend(objc.Object, "alloc", .{}),
+        .Pointer => return objc.getClass(class).?.msgSend(objc.Object, "alloc", .{}),
+        else => @compileError("expected class or string, got " ++ @tagName(@typeInfo(@TypeOf(class)))),
     }
 }
 
