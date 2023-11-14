@@ -5,7 +5,7 @@
     .dependencies = .{
         .zig_objc = .{
             .url = "https://github.com/mitchellh/zig-objc/archive/a38331cb6ee366b3f22d0068297810ef14c0c400.tar.gz",
-            .hash = "1220129674f0b81ece2374461a51b62f046048ca75881e4a58505b2a792ccb56c60d",
+            .hash = "1220dcb34ec79a9b02c46372a41a446212f2366e7c69c8eba68e88f0f25b5ddf475d",
         },
     },
 }
